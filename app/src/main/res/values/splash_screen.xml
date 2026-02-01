@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <!-- Set the splash screen background, animated icon, and animation
-        duration. -->
-        <item name="windowSplashScreenBackground">@color/purple_500</item>
-
-        <!-- Use windowSplashScreenAnimatedIcon to add a drawable or an animated
-             drawable. One of these is required. -->
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/splashicon</item>
-        <!-- Required for animated icons. -->
-        <item name="windowSplashScreenAnimationDuration">200</item>
-
-        <!-- Set the theme of the Activity that directly follows your splash
-        screen. This is required. -->
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="windowSplashScreenAnimationDuration">600</item>
         <item name="postSplashScreenTheme">@style/Theme.SkyCast</item>
+
     </style>
+
 </resources>
