@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.bold.skycast.presentation.SkyCastScreen
+import com.bold.skycast.presentation.ui.SkyCastScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

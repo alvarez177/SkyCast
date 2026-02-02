@@ -1,4 +1,4 @@
-package com.bold.skycast.presentation
+package com.bold.skycast.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

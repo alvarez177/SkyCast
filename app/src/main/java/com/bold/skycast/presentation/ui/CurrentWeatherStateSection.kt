@@ -1,7 +1,6 @@
-package com.bold.skycast.presentation
+package com.bold.skycast.presentation.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
