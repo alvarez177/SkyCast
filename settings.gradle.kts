@@ -21,5 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "SkyCast"
 include(":app")
-include(":domain")
-include(":data")
