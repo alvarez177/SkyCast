@@ -22,10 +22,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.bold.skycast.R
+import com.bold.skycast.presentation.model.DayVisualize
+import com.bold.skycast.presentation.model.ForecastDayVisualize
+import com.bold.skycast.presentation.model.WeatherConditionVisualize
 
 @Composable
 fun ForecastItem(
+    forecastDayVisualize: ForecastDayVisualize,
     modifier: Modifier
 ) {
     Card(
@@ -42,13 +47,13 @@ fun ForecastItem(
             ) {
             Column {
                 Text(
-                    text = "Lunes",
+                    text = forecastDayVisualize.dayName,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(0xFF263238)
                 )
                 Text(
-                    text = "01/02",
+                    text = forecastDayVisualize.date,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFF78909C)
@@ -63,25 +68,23 @@ fun ForecastItem(
             ) {
 
                 Text(
-                    text = "Moderate rain",
+                    text = forecastDayVisualize.day.condition.text,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFF90A4AE),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_cloud_rain),
-                    contentDescription = "Clima actual",
+                AsyncImage(
                     modifier = Modifier.size(48.dp),
+                    model = "https:${forecastDayVisualize.day.condition.icon}",
+                    contentDescription = "",
                     contentScale = ContentScale.FillHeight
                 )
-
             }
 
             Text(
-                text = "74°",
+                text = "${forecastDayVisualize.day.averageTemperature}°",
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF263238)
@@ -93,5 +96,20 @@ fun ForecastItem(
 @Preview(showBackground = true)
 @Composable
 fun ForecastItemPreview() {
-    ForecastItem(modifier = Modifier)
+    val forecastDayVisualize = ForecastDayVisualize(
+        date = "01/02",
+        dayName = "Lunes",
+        day = DayVisualize(
+            averageTemperature = 74f,
+            condition = WeatherConditionVisualize(
+                text = "Moderate rain",
+                icon = "icon",
+                code = 0
+            )
+        )
+    )
+    ForecastItem(
+        forecastDayVisualize = forecastDayVisualize,
+        modifier = Modifier
+    )
 }

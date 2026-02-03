@@ -1,6 +1,5 @@
 package com.bold.skycast.presentation.ui
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,15 +14,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bold.skycast.R
+import coil3.compose.AsyncImage
+import com.bold.skycast.presentation.model.CurrentWeatherVisualize
+import com.bold.skycast.presentation.model.WeatherConditionVisualize
 
 @Composable
-fun CurrentWeatherStateSection() {
+fun CurrentWeatherStateSection(location: String, currentWeatherVisualize: CurrentWeatherVisualize) {
     Card(
         modifier = Modifier.wrapContentWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -36,29 +36,29 @@ fun CurrentWeatherStateSection() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Girardota",
+                text = location,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color(0xFF546E7A)
             )
 
             Text(
-                text = "72°",
+                text = "${currentWeatherVisualize.temperature}°",
                 fontSize = 64.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF263238)
             )
 
             Text(
-                text = "Partly cloudy",
+                text = currentWeatherVisualize.condition.text,
                 fontSize = 16.sp,
                 color = Color(0xFF78909C)
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.ic_cloud_rain),
-                contentDescription = null,
+            AsyncImage(
                 modifier = Modifier.size(96.dp),
+                model = "https:${currentWeatherVisualize.condition.icon}",
+                contentDescription = null,
                 contentScale = ContentScale.Fit
             )
         }
@@ -68,5 +68,17 @@ fun CurrentWeatherStateSection() {
 @Preview(showBackground = true)
 @Composable
 fun CurrentWeatherStateSectionPreview() {
-    CurrentWeatherStateSection()
+    val location = "Medellin"
+    val currentWeatherVisualize = CurrentWeatherVisualize(
+        temperature = 20f,
+        condition = WeatherConditionVisualize(
+            text = "Partly cloudy",
+            icon = "",
+            code = 0
+        )
+    )
+    CurrentWeatherStateSection(
+        location = location,
+        currentWeatherVisualize = currentWeatherVisualize
+    )
 }

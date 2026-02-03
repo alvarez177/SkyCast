@@ -4,7 +4,7 @@ import com.bold.domain.model.Day
 import com.google.gson.annotations.SerializedName
 
 data class DayApi(
-    @SerializedName("avgtemp_f")
+    @SerializedName("avgtemp_c")
     val averageTemperature: Float,
     @SerializedName("condition")
     val condition: WeatherConditionApi
