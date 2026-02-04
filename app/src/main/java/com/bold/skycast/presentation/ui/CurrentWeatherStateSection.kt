@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,34 +26,37 @@ import com.bold.skycast.presentation.model.WeatherConditionVisualize
 @Composable
 fun CurrentWeatherStateSection(location: String, currentWeatherVisualize: CurrentWeatherVisualize) {
     Card(
-        modifier = Modifier.wrapContentWidth(),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.cardElevation(2.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 28.dp),
+                .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = location,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
-                color = Color(0xFF546E7A)
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Text(
                 text = "${currentWeatherVisualize.temperature}°",
-                fontSize = 64.sp,
+                style = MaterialTheme.typography.displayLarge,
                 fontWeight = FontWeight.Bold,
-                color = Color(0xFF263238)
             )
 
             Text(
                 text = currentWeatherVisualize.condition.text,
-                fontSize = 16.sp,
-                color = Color(0xFF78909C)
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             AsyncImage(

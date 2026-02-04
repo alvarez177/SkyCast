@@ -84,6 +84,8 @@ fun SkyCastScreen(
                 weatherScreenInformationVisualize = weatherScreenInformationVisualize
             )
 
+            Spacer(modifier = Modifier.height(12.dp))
+
             if (isSearching) {
                 LocationSearchResults(
                     isSearching = isSearching,

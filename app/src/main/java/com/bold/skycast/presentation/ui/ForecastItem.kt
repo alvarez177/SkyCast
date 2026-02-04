@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -40,17 +41,14 @@ fun ForecastItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(2.dp),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
 
             ) {
             Column {
                 Text(
                     text = forecastDayVisualize.dayName,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF263238)
+                    style = MaterialTheme.typography.titleSmall
                 )
                 Text(
                     text = forecastDayVisualize.date,
@@ -69,11 +67,8 @@ fun ForecastItem(
 
                 Text(
                     text = forecastDayVisualize.day.condition.text,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xFF90A4AE),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 AsyncImage(
                     modifier = Modifier.size(48.dp),
@@ -85,9 +80,8 @@ fun ForecastItem(
 
             Text(
                 text = "${forecastDayVisualize.day.averageTemperature}°",
-                fontSize = 26.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF263238)
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
         }
     }

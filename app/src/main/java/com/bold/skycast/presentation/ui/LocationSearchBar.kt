@@ -10,7 +10,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,7 +28,8 @@ fun LocationSearchBar(
     Column {
         OutlinedTextField(
             value = query,
-            onValueChange = {onQueryChange(it)
+            onValueChange = {
+                onQueryChange(it)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -38,7 +41,11 @@ fun LocationSearchBar(
                 Icon(Icons.Default.Search, contentDescription = null)
             },
             singleLine = true,
-            shape = RoundedCornerShape(16.dp)
+            shape = RoundedCornerShape(20.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface
+            )
         )
     }
 }
