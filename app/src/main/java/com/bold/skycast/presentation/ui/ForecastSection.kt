@@ -41,8 +41,8 @@ fun ForecastSection(forecastVisualize: ForecastVisualize) {
             color = Color(0xFF263238)
         )
 
-        LazyColumn {
-            items(forecastVisualize.forecasts) { forecastDayVisualize ->
+        Column {
+            forecastVisualize.forecasts.forEach { forecastDayVisualize ->
                 ForecastItem(
                     forecastDayVisualize = forecastDayVisualize,
                     modifier = Modifier.padding(horizontal = 5.dp)
