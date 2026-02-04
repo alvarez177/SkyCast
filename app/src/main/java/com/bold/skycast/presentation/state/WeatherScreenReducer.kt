@@ -14,7 +14,43 @@ class WeatherScreenReducer : Reducer<WeatherScreenState, WeatherScreenEvent, Wea
             }
             is WeatherScreenEvent.UpdateWeather -> {
                 previousState.copy(
+                    isLoading = false,
                     weatherScreenInformationVisualize = event.weatherScreenInformationVisualize
+                ) to null
+            }
+
+            is WeatherScreenEvent.SearchLocation -> {
+                previousState.copy(
+                    searchBarContentLoading = true,
+                    searchQuery = event.query,
+                    isSearching = event.query.isNotBlank()
+                ) to null
+            }
+
+            is WeatherScreenEvent.ShowLocationsResult -> {
+                previousState.copy(
+                    searchBarContentLoading = false,
+                    locationsResult = event.locations,
+                    searchLocationsError = null
+                ) to null
+            }
+
+            is WeatherScreenEvent.SelectLocation -> {
+                previousState.copy(
+                    searchQuery = event.locationVisualize.name,
+                    isSearching = false,
+                    locationsResult = emptyList(),
+                    searchBarContentLoading = false,
+                    weatherScreenInformationVisualize = previousState.weatherScreenInformationVisualize?.copy(
+                        locationVisualize = event.locationVisualize
+                    )
+                ) to WeatherScreenEffect.FetchWeatherInformation(event.locationVisualize.name)
+            }
+
+            is WeatherScreenEvent.ErrorSearchLocation -> {
+                previousState.copy(
+                    searchBarContentLoading = false,
+                    searchLocationsError = event.errorMessage
                 ) to null
             }
         }

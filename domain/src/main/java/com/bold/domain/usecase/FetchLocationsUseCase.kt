@@ -9,8 +9,13 @@ import javax.inject.Inject
 class FetchLocationsUseCase @Inject constructor(private val repository: LocationRepository) {
 
     suspend operator fun invoke(inputValue: String): List<Location> {
-        return withContext(Dispatchers.IO) {
+        val locations = withContext(Dispatchers.IO) {
             repository.fetchLocations(inputValue)
+        }
+        if (locations.isEmpty()) {
+            throw NullPointerException()
+        } else {
+            return locations
         }
     }
 }
