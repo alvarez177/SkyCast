@@ -21,18 +21,12 @@ import com.bold.skycast.presentation.model.LocationVisualize
 @Composable
 fun LocationSearchBar(
     query: String,
-    isSearching: Boolean,
-    locationResultIsLoading: Boolean = false,
-    results: List<LocationVisualize>,
-    searchLocationsErrorMessage: String?,
-    onLocationSelected: (LocationVisualize) -> Unit,
     onQueryChange: (String) -> Unit
     ) {
     Column {
         OutlinedTextField(
             value = query,
-            onValueChange = {
-                onQueryChange(it)
+            onValueChange = {onQueryChange(it)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -46,28 +40,6 @@ fun LocationSearchBar(
             singleLine = true,
             shape = RoundedCornerShape(16.dp)
         )
-
-        when {
-            locationResultIsLoading -> {
-                SearchLocationLoader()
-            }
-            searchLocationsErrorMessage != null -> {
-                ErrorSearchLocationResult(searchLocationsErrorMessage)
-            }
-            results.isNotEmpty() -> {
-                LazyColumn {
-                    items(results) { locationVisualize: LocationVisualize ->
-                        LocationResultItem(
-                            locationVisualize = locationVisualize,
-                            onClick = onLocationSelected
-                        )
-                    }
-                }
-            }
-            isSearching && results.isEmpty() -> {
-                EmptyLocationResult()
-            }
-        }
     }
 }
 
@@ -76,23 +48,6 @@ fun LocationSearchBar(
 fun LocationSearchBarPreview() {
     LocationSearchBar(
         query = "",
-        isSearching = false,
-        results = listOf(
-            LocationVisualize(
-                id = 0,
-                name = "Medellin",
-                region = "Antioquia",
-                country = "Colombia"
-            ),
-            LocationVisualize(
-                id = 0,
-                name = "Girardota",
-                region = "Antioquia",
-                country = "Colombia"
-            )
-        ),
-        searchLocationsErrorMessage = null,
-        onLocationSelected = {},
         onQueryChange = {}
     )
 }
