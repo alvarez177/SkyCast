@@ -51,8 +51,11 @@ open class BaseViewModel<State : Reducer.ViewState, Event : Reducer.ViewEvent, E
     }
 
     fun sendEvent(event: Event) {
-        val (newState, _) = reducer.reduce(_state.value, event)
+        val (newState, effect) = reducer.reduce(_state.value, event)
         _state.tryEmit(newState)
+        effect?.let {
+            sendEffect(it)
+        }
     }
 
     fun sendEventForEffect(event: Event) {
