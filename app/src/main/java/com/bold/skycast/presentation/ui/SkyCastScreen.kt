@@ -65,7 +65,14 @@ fun SkyCastScreen(
     onLocationSelected: (LocationVisualize) -> Unit,
     onQueryChange: (String) -> Unit
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = {
+            LocationSearchTopBar(
+                query = query,
+                onQueryChange = onQueryChange
+            )
+        }
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,19 +80,8 @@ fun SkyCastScreen(
                 .padding(horizontal = 8.dp)
         ) {
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.height(80.dp))
-                CurrentWeatherStateSection(
-                    location = weatherScreenInformationVisualize.locationVisualize.name,
-                    currentWeatherVisualize = weatherScreenInformationVisualize.currentWeatherVisualize
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                ForecastSection(weatherScreenInformationVisualize.forecastVisualize)
-            }
-
-            LocationSearchBar(
-                query = query,
-                onQueryChange = onQueryChange
+            ScreenContent(
+                weatherScreenInformationVisualize = weatherScreenInformationVisualize
             )
 
             if (isSearching) {

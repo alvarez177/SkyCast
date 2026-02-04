@@ -26,7 +26,6 @@ fun LocationSearchResults(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 60.dp)
             .zIndex(1f),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(8.dp)
