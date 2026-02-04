@@ -74,7 +74,7 @@ fun SkyCastScreen(
         ) {
 
             Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.height(80.dp)) // espacio del search
+                Spacer(modifier = Modifier.height(80.dp))
                 CurrentWeatherStateSection(
                     location = weatherScreenInformationVisualize.locationVisualize.name,
                     currentWeatherVisualize = weatherScreenInformationVisualize.currentWeatherVisualize
