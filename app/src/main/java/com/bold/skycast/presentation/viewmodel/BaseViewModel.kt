@@ -1,5 +1,6 @@
 package com.bold.skycast.presentation.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bold.skycast.presentation.state.Reducer
