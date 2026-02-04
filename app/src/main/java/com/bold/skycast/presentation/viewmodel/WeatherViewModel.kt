@@ -21,7 +21,7 @@ class WeatherViewModel @Inject constructor(
     private val fetchLocationsUseCase: FetchLocationsUseCase,
     private val fetchForecastUseCase: FetchForecastUseCase,
     private val weatherScreenVisualizeMapper: WeatherScreenVisualizeMapper
-): BaseViewModel<WeatherScreenState, WeatherScreenEvent, WeatherScreenEffect>(
+) : BaseViewModel<WeatherScreenState, WeatherScreenEvent, WeatherScreenEffect>(
     initialState = WeatherScreenState(),
     reducer = WeatherScreenReducer()
 ) {
@@ -35,58 +35,55 @@ class WeatherViewModel @Inject constructor(
             launch {
                 val forecastInformation: ForecastInformation = fetchForecastUseCase.invoke(location)
                 sendEvent(
-                    event = WeatherScreenEvent.UpdateWeather(weatherScreenVisualizeMapper.map(forecastInformation))
+                    event = WeatherScreenEvent.UpdateWeather(
+                        weatherScreenVisualizeMapper.map(
+                            forecastInformation
+                        )
+                    )
                 )
             }
         }
     }
 
     fun onSearchLocation(query: String) {
-        sendEvent(WeatherScreenEvent.SearchLocation(query))
-
-        if (query.isBlank()) {
-            sendEvent(
-                WeatherScreenEvent.ShowLocationsResult(
-                    locations = emptyList()
-                )
-            )
-            return
-        }
         viewModelScope.launch {
-            runCatching {
-                val locations = fetchLocationsUseCase.invoke(query)
+            sendEvent(WeatherScreenEvent.SearchLocation(query))
+
+            if (query.isBlank()) {
                 sendEvent(
-                    event = WeatherScreenEvent.ShowLocationsResult(
-                        locations = locations.map { location ->
-                            LocationVisualize(
-                                id = location.id,
-                                name = location.name,
-                                region = location.region,
-                                country = location.country
-                            )
-                        }
+                    WeatherScreenEvent.ShowLocationsResult(
+                        locations = emptyList()
                     )
                 )
-
-                /* val forecastInformation = fetchForecastUseCase.invoke(query)
-                sendEvent(
-                    WeatherScreenEvent.UpdateWeather(
-                        weatherScreenVisualizeMapper.map(forecastInformation)
+            } else {
+                runCatching {
+                    val locations = fetchLocationsUseCase.invoke(query)
+                    sendEvent(
+                        event = WeatherScreenEvent.ShowLocationsResult(
+                            locations = locations.map { location ->
+                                LocationVisualize(
+                                    id = location.id,
+                                    name = location.name,
+                                    region = location.region,
+                                    country = location.country
+                                )
+                            }
+                        )
                     )
-                )*/
-            }.onFailure { error ->
-                when (error) {
-                    LocationError.EmptyResult ->
-                        sendEvent(WeatherScreenEvent.ShowLocationsResult(emptyList()))
+                }.onFailure { error ->
+                    when (error) {
+                        LocationError.EmptyResult ->
+                            sendEvent(WeatherScreenEvent.ShowLocationsResult(emptyList()))
 
-                    LocationError.NetworkError ->
-                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error de red"))
+                        LocationError.NetworkError ->
+                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error de red"))
 
-                    LocationError.InvalidResponse ->
-                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Respuesta inválida"))
+                        LocationError.InvalidResponse ->
+                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Respuesta inválida"))
 
-                    else ->
-                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error inesperado"))
+                        else ->
+                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error inesperado"))
+                    }
                 }
             }
         }

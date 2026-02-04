@@ -11,8 +11,6 @@ import javax.inject.Inject
 class LocationDataRepository @Inject constructor(private val service: WeatherService) :
     LocationRepository {
 
-    private var locations: List<Location>? = null
-
     override suspend fun fetchLocations(location: String): List<Location> {
         val response: Response<List<LocationApi>> = service.fetchLocations(location)
         if (!response.isSuccessful) {
