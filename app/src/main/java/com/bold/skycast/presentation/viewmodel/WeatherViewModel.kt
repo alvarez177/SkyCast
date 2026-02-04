@@ -1,6 +1,7 @@
 package com.bold.skycast.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.bold.domain.exception.LocationError
 import com.bold.domain.model.ForecastInformation
 import com.bold.domain.usecase.FetchForecastUseCase
 import com.bold.domain.usecase.FetchLocationsUseCase
@@ -73,10 +74,20 @@ class WeatherViewModel @Inject constructor(
                         weatherScreenVisualizeMapper.map(forecastInformation)
                     )
                 )*/
-            }.onFailure {
-                sendEvent(
-                    event = WeatherScreenEvent.ErrorSearchLocation("No se encontro la ubicación especificada")
-                )
+            }.onFailure { error ->
+                when (error) {
+                    LocationError.EmptyResult ->
+                        sendEvent(WeatherScreenEvent.ShowLocationsResult(emptyList()))
+
+                    LocationError.NetworkError ->
+                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error de red"))
+
+                    LocationError.InvalidResponse ->
+                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Respuesta inválida"))
+
+                    else ->
+                        sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error inesperado"))
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.bold.domain.usecase
 
+import com.bold.domain.exception.LocationError
 import com.bold.domain.model.Location
 import com.bold.domain.repository.LocationRepository
 import kotlinx.coroutines.Dispatchers
@@ -13,7 +14,7 @@ class FetchLocationsUseCase @Inject constructor(private val repository: Location
             repository.fetchLocations(inputValue)
         }
         if (locations.isEmpty()) {
-            throw NullPointerException()
+            throw LocationError.EmptyResult
         } else {
             return locations
         }

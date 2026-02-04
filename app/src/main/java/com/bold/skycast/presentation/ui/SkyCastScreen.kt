@@ -84,7 +84,6 @@ fun SkyCastScreen(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun SkyCastScreenPreview() {
