@@ -1,5 +1,6 @@
 package com.bold.skycast.presentation.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -65,25 +66,42 @@ fun SkyCastScreen(
     onQueryChange: (String) -> Unit
 ) {
     Scaffold { paddingValues ->
-        Column(modifier = Modifier.fillMaxSize().padding(paddingValues).padding(horizontal = 8.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 8.dp)
+        ) {
+
+            Column(modifier = Modifier.fillMaxSize()) {
+                Spacer(modifier = Modifier.height(80.dp))
+                CurrentWeatherStateSection(
+                    location = weatherScreenInformationVisualize.locationVisualize.name,
+                    currentWeatherVisualize = weatherScreenInformationVisualize.currentWeatherVisualize
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                ForecastSection(weatherScreenInformationVisualize.forecastVisualize)
+            }
+
             LocationSearchBar(
                 query = query,
-                isSearching = isSearching,
-                onQueryChange = onQueryChange,
-                results = locationResults,
-                searchLocationsErrorMessage = searchLocationsErrorMessage,
-                onLocationSelected = onLocationSelected
+                onQueryChange = onQueryChange
             )
-            CurrentWeatherStateSection(
-                location = weatherScreenInformationVisualize.locationVisualize.name,
-                currentWeatherVisualize = weatherScreenInformationVisualize.currentWeatherVisualize
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            ForecastSection(weatherScreenInformationVisualize.forecastVisualize)
+
+            if (isSearching) {
+                LocationSearchResults(
+                    isSearching = isSearching,
+                    locationResultIsLoading = false,
+                    results = locationResults,
+                    searchLocationsErrorMessage = searchLocationsErrorMessage,
+                    onLocationSelected = onLocationSelected
+                )
+            }
+
+
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
