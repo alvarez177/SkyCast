@@ -1,6 +1,7 @@
 package com.bold.skycast.presentation.ui
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,17 +27,25 @@ import com.bold.skycast.presentation.model.ForecastVisualize
 import com.bold.skycast.presentation.model.LocationVisualize
 import com.bold.skycast.presentation.model.WeatherConditionVisualize
 import com.bold.skycast.presentation.model.WeatherScreenInformationVisualize
+import com.bold.skycast.presentation.model.WeatherType
+import com.bold.skycast.ui.theme.weatherBackground
 
 @Composable
 fun ScreenContent(
     weatherScreenInformationVisualize: WeatherScreenInformationVisualize,
     screenContentLoading: Boolean
 ) {
+    val colors = weatherBackground(
+        weatherScreenInformationVisualize.weatherType
+    )
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Box(
         modifier = Modifier.fillMaxSize()
+            .background(
+            brush = Brush.verticalGradient(colors)
+        )
     ) {
         if (isLandscape) {
             LandscapeContent(weatherScreenInformationVisualize)
@@ -58,7 +69,6 @@ fun PortraitContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(16.dp))
@@ -142,7 +152,8 @@ fun ScreenContentPreview() {
                     )
                 )
             )
-        )
+        ),
+        weatherType = WeatherType.FOG
     )
     ScreenContent(
         weatherScreenInformationVisualize = weatherScreenInformationVisualize,
