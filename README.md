@@ -99,6 +99,14 @@ Asegúrate de contar con:
 - **Gradle** (incluido con Android Studio)
 - Conexión a internet (para consumo del API del clima)
 
+## 🤖 ¿ Se hizo uso de la inteligencia artificial ?
+Si, utilice la inteligencia artificial para lo siguiente:
+- Ayudarme a mappear todos los codigos de condición del clima que expone el weatherapi [ https://www.weatherapi.com/docs/weather_conditions.json ] ( mapToWeatherType(conditionCode: Int), fun      weatherBackground(type: WeatherType) )
+- Ayudarme con los casos de errores(Exceptions) en las pruebas unitarias
+- Me apoye pidiendo sugerencias de mejora para la UI que yo ya habia construido, entonces me recomendo styles para los textos y remover algunos Card innecesarios.
+- Ayuda ubicando la sección flotante de los resultados de busqueda del Search bar, y otros temas de alineación en general.
+- Ayuda con la estrategia debounce para el search bar.
+
 
 ## 📱 Pantallas de la aplicación
 
