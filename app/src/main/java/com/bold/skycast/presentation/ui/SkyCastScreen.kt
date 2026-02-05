@@ -21,6 +21,7 @@ import com.bold.skycast.presentation.model.ForecastVisualize
 import com.bold.skycast.presentation.model.LocationVisualize
 import com.bold.skycast.presentation.model.WeatherConditionVisualize
 import com.bold.skycast.presentation.model.WeatherScreenInformationVisualize
+import com.bold.skycast.presentation.model.WeatherType
 import com.bold.skycast.presentation.state.WeatherScreenEffect
 import com.bold.skycast.presentation.viewmodel.WeatherViewModel
 
@@ -75,6 +76,7 @@ fun SkyCastScreen(
             LocationSearchTopBar(
                 query = query,
                 isSearching = isSearching,
+                weatherType = weatherScreenInformationVisualize.weatherType,
                 onClearQuery = onClearQuery,
                 onQueryChange = onQueryChange
             )
@@ -84,7 +86,6 @@ fun SkyCastScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .padding(horizontal = 8.dp)
         ) {
 
             ScreenContent(
@@ -142,7 +143,8 @@ fun SkyCastScreenPreview() {
                     )
                 )
             )
-        )
+        ),
+        weatherType = WeatherType.FOG
     )
     SkyCastScreen(
         weatherScreenInformationVisualize = weatherScreenInformationVisualize,

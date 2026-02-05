@@ -22,16 +22,6 @@ import com.bold.skycast.presentation.model.WeatherConditionVisualize
 
 @Composable
 fun CurrentWeatherStateSection(location: String, currentWeatherVisualize: CurrentWeatherVisualize) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
-        shape = RoundedCornerShape(24.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
-    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,7 +53,6 @@ fun CurrentWeatherStateSection(location: String, currentWeatherVisualize: Curren
                 contentScale = ContentScale.Fit
             )
         }
-    }
 }
 
 @Preview(showBackground = true)

@@ -3,4 +3,6 @@
 
     <string name="search_bar_search_location_place_holder">Search location</string>
     <string name="search_bar_results_no_results_were_found">No results were found</string>
+
+    <string name="forecast_section_title">3 - DAY WEATHER FORECAST</string>
 </resources>
