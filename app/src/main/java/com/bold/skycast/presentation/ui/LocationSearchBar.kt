@@ -15,8 +15,10 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bold.skycast.R
 
 @Composable
 fun LocationSearchBar(
@@ -35,7 +37,7 @@ fun LocationSearchBar(
                 .fillMaxWidth()
                 .padding(vertical = 5.dp),
             placeholder = {
-                Text("Buscar ubicación")
+                Text(stringResource(R.string.search_bar_search_location_place_holder))
             },
             leadingIcon = {
                 Icon(Icons.Default.Search, contentDescription = null)
@@ -45,7 +47,7 @@ fun LocationSearchBar(
                     IconButton(onClick = onClearQuery) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Limpiar búsqueda"
+                            contentDescription = ""
                         )
                     }
                 }
