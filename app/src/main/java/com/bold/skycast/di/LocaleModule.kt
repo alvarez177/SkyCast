@@ -13,6 +13,6 @@ object LocaleModule {
 
     @Provides
     fun provideLocale(): Locale {
-        return Locale("es", "ES")
+        return Locale("en", "EN")
     }
 }

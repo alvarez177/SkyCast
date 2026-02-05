@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.bold.skycast.presentation.model.CurrentWeatherVisualize
 import com.bold.skycast.presentation.model.DayVisualize
 import com.bold.skycast.presentation.model.ForecastDayVisualize
@@ -27,16 +28,31 @@ import com.bold.skycast.presentation.model.WeatherScreenInformationVisualize
 
 @Composable
 fun ScreenContent(
-    weatherScreenInformationVisualize: WeatherScreenInformationVisualize
+    weatherScreenInformationVisualize: WeatherScreenInformationVisualize,
+    screenContentLoading: Boolean
 ) {
-
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    if (isLandscape) {
-        LandscapeContent(weatherScreenInformationVisualize)
-    } else {
-        PortraitContent(weatherScreenInformationVisualize)
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+
+        // 1️⃣ Contenido principal
+        if (isLandscape) {
+            LandscapeContent(weatherScreenInformationVisualize)
+        } else {
+            PortraitContent(weatherScreenInformationVisualize)
+        }
+
+        // 2️⃣ Loader encima de TODO el contenido
+        if (screenContentLoading) {
+            FullScreenLoader(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .zIndex(1f) // opcional pero recomendado
+            )
+        }
     }
 }
 
@@ -134,6 +150,7 @@ fun ScreenContentPreview() {
         )
     )
     ScreenContent(
-        weatherScreenInformationVisualize = weatherScreenInformationVisualize
+        weatherScreenInformationVisualize = weatherScreenInformationVisualize,
+        screenContentLoading = true
     )
 }

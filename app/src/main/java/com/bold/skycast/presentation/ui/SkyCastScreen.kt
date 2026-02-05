@@ -34,7 +34,9 @@ fun SkyCastContentScreenRoute(
     uiState.weatherScreenInformationVisualize?.let {
         SkyCastScreen(
             weatherScreenInformationVisualize = it,
+            screenContentLoading = uiState.isLoading,
             query = uiState.searchQuery.orEmpty(),
+            locationsResultLoading = uiState.searchBarContentLoading,
             isSearching = uiState.isSearching,
             locationResults = uiState.locationsResult,
             searchLocationsErrorMessage = uiState.searchLocationsError,
@@ -58,7 +60,9 @@ fun SkyCastContentScreenRoute(
 @Composable
 fun SkyCastScreen(
     weatherScreenInformationVisualize: WeatherScreenInformationVisualize,
+    screenContentLoading: Boolean,
     query: String,
+    locationsResultLoading: Boolean,
     isSearching: Boolean,
     locationResults: List<LocationVisualize>,
     searchLocationsErrorMessage: String?,
@@ -84,7 +88,8 @@ fun SkyCastScreen(
         ) {
 
             ScreenContent(
-                weatherScreenInformationVisualize = weatherScreenInformationVisualize
+                weatherScreenInformationVisualize = weatherScreenInformationVisualize,
+                screenContentLoading = screenContentLoading
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -92,7 +97,7 @@ fun SkyCastScreen(
             if (isSearching) {
                 LocationSearchResults(
                     isSearching = isSearching,
-                    locationResultIsLoading = false,
+                    locationResultIsLoading = locationsResultLoading,
                     results = locationResults,
                     searchLocationsErrorMessage = searchLocationsErrorMessage,
                     onLocationSelected = onLocationSelected
@@ -141,7 +146,9 @@ fun SkyCastScreenPreview() {
     )
     SkyCastScreen(
         weatherScreenInformationVisualize = weatherScreenInformationVisualize,
+        screenContentLoading = true,
         query = "",
+        locationsResultLoading = false,
         isSearching = false,
         locationResults = listOf(
             LocationVisualize(

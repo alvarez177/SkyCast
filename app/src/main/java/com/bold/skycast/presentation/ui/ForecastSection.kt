@@ -35,7 +35,7 @@ fun ForecastSection(forecastVisualize: ForecastVisualize) {
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "3 días de pronostico",
+            text = "3 - DAY WEATHER FORECAST",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF263238)
