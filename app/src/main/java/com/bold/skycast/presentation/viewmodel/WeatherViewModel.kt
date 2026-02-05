@@ -45,6 +45,10 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    fun onClearQuery() {
+        sendEvent(WeatherScreenEvent.SearchLocation(""))
+    }
+
     fun onSearchLocation(query: String) {
         viewModelScope.launch {
             sendEvent(WeatherScreenEvent.SearchLocation(query))

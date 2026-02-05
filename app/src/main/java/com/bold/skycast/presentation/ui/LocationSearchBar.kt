@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -23,6 +25,8 @@ import com.bold.skycast.presentation.model.LocationVisualize
 @Composable
 fun LocationSearchBar(
     query: String,
+    isSearching: Boolean,
+    onClearQuery: () -> Unit,
     onQueryChange: (String) -> Unit
     ) {
     Column {
@@ -40,6 +44,16 @@ fun LocationSearchBar(
             leadingIcon = {
                 Icon(Icons.Default.Search, contentDescription = null)
             },
+            trailingIcon = {
+                if (isSearching) {
+                    IconButton(onClick = onClearQuery) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Limpiar búsqueda"
+                        )
+                    }
+                }
+            },
             singleLine = true,
             shape = RoundedCornerShape(20.dp),
             colors = OutlinedTextFieldDefaults.colors(
@@ -55,6 +69,8 @@ fun LocationSearchBar(
 fun LocationSearchBarPreview() {
     LocationSearchBar(
         query = "",
+        isSearching = true,
+        onClearQuery = {},
         onQueryChange = {}
     )
 }

@@ -1,7 +1,6 @@
 package com.bold.skycast.presentation.ui
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -40,7 +39,8 @@ fun SkyCastContentScreenRoute(
             locationResults = uiState.locationsResult,
             searchLocationsErrorMessage = uiState.searchLocationsError,
             onLocationSelected = viewModel::onLocationSelected,
-            onQueryChange = viewModel::onSearchLocation
+            onQueryChange = viewModel::onSearchLocation,
+            onClearQuery = viewModel::onClearQuery
         )
     }
 
@@ -63,12 +63,15 @@ fun SkyCastScreen(
     locationResults: List<LocationVisualize>,
     searchLocationsErrorMessage: String?,
     onLocationSelected: (LocationVisualize) -> Unit,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit
 ) {
     Scaffold(
         topBar = {
             LocationSearchTopBar(
                 query = query,
+                isSearching = isSearching,
+                onClearQuery = onClearQuery,
                 onQueryChange = onQueryChange
             )
         }
@@ -150,6 +153,7 @@ fun SkyCastScreenPreview() {
         ),
         searchLocationsErrorMessage = null,
         onLocationSelected = {},
-        onQueryChange = {}
+        onQueryChange = {},
+        onClearQuery = {}
     )
 }

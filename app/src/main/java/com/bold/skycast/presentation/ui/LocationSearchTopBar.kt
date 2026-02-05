@@ -2,7 +2,6 @@ package com.bold.skycast.presentation.ui
 
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -10,12 +9,16 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun LocationSearchTopBar(
     query: String,
+    isSearching: Boolean,
+    onClearQuery: () -> Unit,
     onQueryChange: (String) -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
             LocationSearchBar(
                 query = query,
+                isSearching = isSearching,
+                onClearQuery = onClearQuery,
                 onQueryChange = onQueryChange
             )
         }
@@ -26,6 +29,8 @@ fun LocationSearchTopBar(
 @Composable
 fun LocationSearchTopBarPreview() {
     LocationSearchTopBar(
-        query = "Medellin"
+        query = "Medellin",
+        isSearching = true,
+        onClearQuery = {}
     ) { }
 }
