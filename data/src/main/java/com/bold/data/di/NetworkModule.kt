@@ -14,12 +14,17 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
+
+    companion object {
+        private const val BASE_URL = "https://api.weatherapi.com/v1/"
+    }
+
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit {
         val client = OkHttpClient.Builder().addInterceptor(ServiceInterceptor()).build()
         return Retrofit.Builder()
-            .baseUrl("https://api.weatherapi.com/v1/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

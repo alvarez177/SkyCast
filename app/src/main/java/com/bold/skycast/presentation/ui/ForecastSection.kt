@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,14 +33,14 @@ fun ForecastSection(forecastVisualize: ForecastVisualize) {
     ) {
         Text(
             modifier = Modifier.padding(10.dp),
-            text = "3 días de pronostico",
+            text = "3 - DAY WEATHER FORECAST",
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF263238)
         )
 
-        LazyColumn {
-            items(forecastVisualize.forecasts) { forecastDayVisualize ->
+        Column {
+            forecastVisualize.forecasts.forEach { forecastDayVisualize ->
                 ForecastItem(
                     forecastDayVisualize = forecastDayVisualize,
                     modifier = Modifier.padding(horizontal = 5.dp)

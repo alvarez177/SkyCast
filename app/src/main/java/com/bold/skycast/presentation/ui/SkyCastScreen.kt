@@ -1,7 +1,6 @@
 package com.bold.skycast.presentation.ui
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -35,12 +34,15 @@ fun SkyCastContentScreenRoute(
     uiState.weatherScreenInformationVisualize?.let {
         SkyCastScreen(
             weatherScreenInformationVisualize = it,
+            screenContentLoading = uiState.isLoading,
             query = uiState.searchQuery.orEmpty(),
+            locationsResultLoading = uiState.searchBarContentLoading,
             isSearching = uiState.isSearching,
             locationResults = uiState.locationsResult,
             searchLocationsErrorMessage = uiState.searchLocationsError,
             onLocationSelected = viewModel::onLocationSelected,
-            onQueryChange = viewModel::onSearchLocation
+            onQueryChange = viewModel::onSearchLocation,
+            onClearQuery = viewModel::onClearQuery
         )
     }
 
@@ -58,14 +60,26 @@ fun SkyCastContentScreenRoute(
 @Composable
 fun SkyCastScreen(
     weatherScreenInformationVisualize: WeatherScreenInformationVisualize,
+    screenContentLoading: Boolean,
     query: String,
+    locationsResultLoading: Boolean,
     isSearching: Boolean,
     locationResults: List<LocationVisualize>,
     searchLocationsErrorMessage: String?,
     onLocationSelected: (LocationVisualize) -> Unit,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit
 ) {
-    Scaffold { paddingValues ->
+    Scaffold(
+        topBar = {
+            LocationSearchTopBar(
+                query = query,
+                isSearching = isSearching,
+                onClearQuery = onClearQuery,
+                onQueryChange = onQueryChange
+            )
+        }
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -73,25 +87,17 @@ fun SkyCastScreen(
                 .padding(horizontal = 8.dp)
         ) {
 
-            Column(modifier = Modifier.fillMaxSize()) {
-                Spacer(modifier = Modifier.height(80.dp))
-                CurrentWeatherStateSection(
-                    location = weatherScreenInformationVisualize.locationVisualize.name,
-                    currentWeatherVisualize = weatherScreenInformationVisualize.currentWeatherVisualize
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                ForecastSection(weatherScreenInformationVisualize.forecastVisualize)
-            }
-
-            LocationSearchBar(
-                query = query,
-                onQueryChange = onQueryChange
+            ScreenContent(
+                weatherScreenInformationVisualize = weatherScreenInformationVisualize,
+                screenContentLoading = screenContentLoading
             )
+
+            Spacer(modifier = Modifier.height(12.dp))
 
             if (isSearching) {
                 LocationSearchResults(
                     isSearching = isSearching,
-                    locationResultIsLoading = false,
+                    locationResultIsLoading = locationsResultLoading,
                     results = locationResults,
                     searchLocationsErrorMessage = searchLocationsErrorMessage,
                     onLocationSelected = onLocationSelected
@@ -140,7 +146,9 @@ fun SkyCastScreenPreview() {
     )
     SkyCastScreen(
         weatherScreenInformationVisualize = weatherScreenInformationVisualize,
+        screenContentLoading = true,
         query = "",
+        locationsResultLoading = false,
         isSearching = false,
         locationResults = listOf(
             LocationVisualize(
@@ -152,6 +160,7 @@ fun SkyCastScreenPreview() {
         ),
         searchLocationsErrorMessage = null,
         onLocationSelected = {},
-        onQueryChange = {}
+        onQueryChange = {},
+        onClearQuery = {}
     )
 }

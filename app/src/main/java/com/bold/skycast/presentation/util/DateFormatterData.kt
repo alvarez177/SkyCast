@@ -21,7 +21,7 @@ class DateFormatterData @Inject constructor(
         val today = LocalDate.now()
 
         return if (parsedDate.isEqual(today)) {
-            "Hoy"
+            "Today"
         } else {
             parsedDate.dayOfWeek.getDisplayName(
                 TextStyle.FULL,

@@ -13,6 +13,11 @@ import com.bold.skycast.presentation.state.WeatherScreenReducer
 import com.bold.skycast.presentation.state.WeatherScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,13 +31,20 @@ class WeatherViewModel @Inject constructor(
     reducer = WeatherScreenReducer()
 ) {
 
+    private val searchQueryFlow = MutableStateFlow("")
+
+
     override suspend fun initialDataLoad() {
+        observeSearchQuery()
         fetchWeather()
     }
 
     suspend fun fetchWeather(location: String = "Medellin") {
         coroutineScope {
             launch {
+                sendEvent(WeatherScreenEvent.UpdateScreenLoading(
+                    isLoading = true
+                ))
                 val forecastInformation: ForecastInformation = fetchForecastUseCase.invoke(location)
                 sendEvent(
                     event = WeatherScreenEvent.UpdateWeather(
@@ -45,48 +57,13 @@ class WeatherViewModel @Inject constructor(
         }
     }
 
+    fun onClearQuery() {
+        sendEvent(WeatherScreenEvent.SearchLocation(""))
+    }
+
     fun onSearchLocation(query: String) {
-        viewModelScope.launch {
-            sendEvent(WeatherScreenEvent.SearchLocation(query))
-
-            if (query.isBlank()) {
-                sendEvent(
-                    WeatherScreenEvent.ShowLocationsResult(
-                        locations = emptyList()
-                    )
-                )
-            } else {
-                runCatching {
-                    val locations = fetchLocationsUseCase.invoke(query)
-                    sendEvent(
-                        event = WeatherScreenEvent.ShowLocationsResult(
-                            locations = locations.map { location ->
-                                LocationVisualize(
-                                    id = location.id,
-                                    name = location.name,
-                                    region = location.region,
-                                    country = location.country
-                                )
-                            }
-                        )
-                    )
-                }.onFailure { error ->
-                    when (error) {
-                        LocationError.EmptyResult ->
-                            sendEvent(WeatherScreenEvent.ShowLocationsResult(emptyList()))
-
-                        LocationError.NetworkError ->
-                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error de red"))
-
-                        LocationError.InvalidResponse ->
-                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Respuesta inválida"))
-
-                        else ->
-                            sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error inesperado"))
-                    }
-                }
-            }
-        }
+        sendEvent(WeatherScreenEvent.SearchLocation(query))
+        searchQueryFlow.value = query
     }
 
     fun onLocationSelected(locationVisualize: LocationVisualize) {
@@ -95,5 +72,53 @@ class WeatherViewModel @Inject constructor(
                 locationVisualize = locationVisualize
             )
         )
+    }
+
+    private fun observeSearchQuery() {
+        viewModelScope.launch {
+            searchQueryFlow
+                .debounce(400)
+                .distinctUntilChanged()
+                .collectLatest { query ->
+
+                    if (query.isBlank()) {
+                        sendEvent(
+                            WeatherScreenEvent.ShowLocationsResult(emptyList())
+                        )
+                        return@collectLatest
+                    }
+
+                    runCatching {
+                        fetchLocationsUseCase.invoke(query)
+                    }.onSuccess { locations ->
+                        sendEvent(
+                            WeatherScreenEvent.ShowLocationsResult(
+                                locations.map {
+                                    LocationVisualize(
+                                        id = it.id,
+                                        name = it.name,
+                                        region = it.region,
+                                        country = it.country
+                                    )
+                                }
+                            )
+                        )
+                    }.onFailure { error ->
+                        when (error) {
+                            LocationError.EmptyResult ->
+                                sendEvent(WeatherScreenEvent.ShowLocationsResult(emptyList()))
+
+                            LocationError.NetworkError ->
+                                sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error de red"))
+
+                            LocationError.InvalidResponse ->
+                                sendEvent(WeatherScreenEvent.ErrorSearchLocation("Respuesta inválida"))
+
+                            else ->
+                                sendEvent(WeatherScreenEvent.ErrorSearchLocation("Error inesperado"))
+                        }
+                    }
+                }
+        }
     }
 }

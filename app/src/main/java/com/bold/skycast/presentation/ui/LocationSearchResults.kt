@@ -2,7 +2,6 @@ package com.bold.skycast.presentation.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +25,6 @@ fun LocationSearchResults(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 60.dp)
             .zIndex(1f),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(8.dp)
